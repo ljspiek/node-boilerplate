@@ -9,7 +9,7 @@ const app = express()
 
 const morganOption = (NODE_ENV === 'production')
   ? 'tiny'
-  : 'common';
+  : 'combined';
 
 app
   .use(morgan(morganOption))
