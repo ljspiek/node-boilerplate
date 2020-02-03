@@ -27,6 +27,10 @@ app.use(function validateBearerToken(req, res, next) {
   next() // move to the next middleware
 })
 
+app.get('/', (req, res) => {
+  res.send('Hello, world!')
+})
+
 app.use(function errorHandler(error, req, res, next) {
   let response
   if (NODE_ENV === 'production') {
@@ -35,10 +39,6 @@ app.use(function errorHandler(error, req, res, next) {
       response = { message: error.message, error }
   }
   res.status(500).json(response)
-})
-
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
 })
 
 module.exports = app
