@@ -4,41 +4,26 @@ const morgan = require('morgan')
 const helmet = require('helmet')
 const cors = require('cors')
 const { NODE_ENV, API_TOKEN } = require('./config')
+const validateBearerToken = require('./validate-bearer-token')
+const errorHandler = require('./error-handler')
+const anyRouter = require('./any/any-router')
 
 const app = express()
 
-const morganOption = (NODE_ENV === 'production')
-  ? 'tiny'
-  : 'combined'
-
 app
-  .use(morgan(morganOption))
+  .use(morgan((NODE_ENV === 'production') ? 'tiny' : 'common', {
+    skip: () => NODE_ENV === 'test'
+  }))
   .use(helmet())
   .use(cors())
+  .use(validateBearerToken)
   .use(express.json())
-
-app.use(function validateBearerToken(req, res, next) {
-  const apiToken = API_TOKEN
-  const authToken = req.get('Authorization')
-
-  if (!authToken || authToken.split(' ')[1] !== apiToken) {
-    return res.status(401).json({ error: 'Unauthorized request' })
-  }
-  next() // move to the next middleware
-})
+  .use('/api/any', anyRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')
 })
 
-app.use(function errorHandler(error, req, res, next) {
-  let response
-  if (NODE_ENV === 'production') {
-    response = { error: { message: 'server error' } }
-    } else {
-      response = { message: error.message, error }
-  }
-  res.status(500).json(response)
-})
+app.use(errorHandler)
 
 module.exports = app
