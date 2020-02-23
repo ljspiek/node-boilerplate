@@ -51,7 +51,7 @@ anyRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `${any.id}`))
-          .json(serializeBookmark(bookmark))
+          .json(serializeAny(any))
       })
       .catch(next)
   })
