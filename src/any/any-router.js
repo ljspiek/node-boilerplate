@@ -18,7 +18,7 @@ const serializeAny = any => ({
 const anydb = req.app.get('db')
 
 anyRouter
-  .router('/')
+  .route('/')
 
   .get((req, res, next) => {
     AnyService.getAllAny(anydb)
@@ -33,7 +33,7 @@ anyRouter
     const newAny = { param1, param2, param3 }
 
     for (const field of ['param1', 'param2', 'param3']) {
-      if (!newBookmark[field]) {
+      if (!newAny[field]) {
         logger.error(`${field} is required`)
         return res.status(400).send({
           error: { message: `'${field}' is required` }
@@ -57,7 +57,7 @@ anyRouter
   })
 
   anyRouter
-    .router('/:any_id')
+    .route('/:any_id')
 
     .all((req, res, next) => {
       const { any_id } = req.params
