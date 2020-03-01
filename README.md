@@ -1,6 +1,6 @@
 # Broilerplate!
 
-This is a broilerplate project used for starting new projects!
+This is a broilerplate project used for starting new projects.
 
 ## Broilerplate? Don't you mean 'boilerplate'?
 
