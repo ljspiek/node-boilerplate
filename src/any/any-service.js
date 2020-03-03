@@ -1,26 +1,26 @@
 const AnyService = {
   getAllAny(knex) {
-    return knex.select('*').from('anydb')
+    return knex.select('*').from('anytable')
   },
   getById(knex, id) {
-    return knex.from('anydb').select('*').where('id', id).first()
+    return knex.from('anytable').select('*').where('id', id).first()
   },
   insertAny(knex, newAny) {
     return knex
       .insert(newAny)
-      .into('anydb')
+      .into('anytable')
       .returning('*')
       .then(rows => {
         return rows[0]
       })
   },
   deleteAny(knex, id) {
-    return knex('anydb')
+    return knex('anytable')
     .where({ id })
     .delete()
   },
   updateAny(knex, id, newAnyFields) {
-    return knex('anydb')
+    return knex('anytable')
       .where({ id })
       .update(newAnyFields)
   },
